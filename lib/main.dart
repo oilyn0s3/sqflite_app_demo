@@ -9,10 +9,21 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData.from(
+          colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.purple,
+      )),
       home: Scaffold(
-        body: Center(
+        appBar: AppBar(
+          title: const Text("SQLite Demo"),
+          centerTitle: true,
+        ),
+        body: const Center(
           child: Text('Hello World!'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
         ),
       ),
     );
