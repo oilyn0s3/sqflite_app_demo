@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 
 class SQLHelper {
   static const _tableName = 'items_database.db';
+
   static Future<void> createTable(sql.Database database) async {
     await database.execute("""
       CREATE TABLE items(
@@ -31,7 +32,7 @@ class SQLHelper {
     );
   }
 
-  Future<int> addItem(
+  static Future<int> addItem(
     String title,
     String? description,
   ) async {
@@ -46,19 +47,19 @@ class SQLHelper {
     return id;
   }
 
-  Future<List<Map<String, dynamic>>> getAllItems() async {
+  static Future<List<Map<String, dynamic>>> getAllItems() async {
     final db = await SQLHelper.db();
 
     return db.query(_tableName, orderBy: 'id');
   }
 
-  Future<List<Map<String, dynamic>>> getItem(int id) async {
+  static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await SQLHelper.db();
 
     return db.query(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
   }
 
-  Future<int> updateItem(
+  static Future<int> updateItem(
     int id,
     String title,
     String? description,
@@ -70,5 +71,15 @@ class SQLHelper {
       'createdAt': DateTime.now().toString()
     };
     return db.update(_tableName, data, where: 'id = ?', whereArgs: [id]);
+  }
+
+  static Future<void> deleteItem(int id) async {
+    final db = await SQLHelper.db();
+
+    try {
+      await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+    } catch (error) {
+      debugPrint("Cannot Delete The Item: $error");
+    }
   }
 }
