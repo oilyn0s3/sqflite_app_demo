@@ -6,13 +6,14 @@ import 'package:sqflite/sqflite.dart' as sql;
 // import 'package:sqflite/sql.dart';
 
 class SQLHelper {
-  static const _tableName = 'items_database.db';
+  static const _dbName = 'items_database.db';
+  static const _tableName = 'items';
 
   static Future<void> createTable(sql.Database database) async {
     await database.execute("""
       CREATE TABLE items(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      title TEXT. 
+      title TEXT, 
       description TEXT,
       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
@@ -23,7 +24,7 @@ class SQLHelper {
     return sql.openDatabase(
       join(
         await sql.getDatabasesPath(),
-        _tableName,
+        _dbName,
       ),
       version: 1,
       onCreate: (sql.Database db, version) async {
